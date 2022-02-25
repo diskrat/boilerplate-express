@@ -17,9 +17,22 @@ function get_json(req, res) {
   res.json(data);
 }
 
+function time_server(req,res,next) {
+    req.time = new Date().toString()
+    next();
+}
+
+function final_handdler(req,res) {
+    const time = {'time': req.time }
+    res.json(time)
+}
 app.use(logger)
 app.use("/public", express.static(__dirname + "/public"));
+
+
 app.get("/", views);
 app.get("/json", get_json);
+app.get("/now",time_server,final_handdler);
+
 
 module.exports = app;
