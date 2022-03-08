@@ -28,7 +28,7 @@ function final_handdler(req,res) {
 }
 
 function echo_word(req,res) {
-  res.json({'echo':req.params})
+  res.json({'echo':req.params.word})
 }
 
 
@@ -39,7 +39,6 @@ app.post('/:word',(req, res) => {
   const {echo} = req.params;
   console.log(req.params);
   res.json(req.params)
-  
 })
 
 app.get('/', views);
