@@ -33,16 +33,19 @@ function echo_word(req, res) {
   res.json({ echo: req.params.word });
 }
 
-function first_last(req, res) {
+function first_last_query(req, res) {
   res.json({ name: `${req.query.first} ${req.query.last}` });
 }
 
+function first_last_body(req, res) {
+  res.json({ name: `${req.body.first} ${req.body.last}` });
+}
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger);
 app.use("/public", express.static(__dirname + "/public"));
 
 
-app.route("/name").get(first_last);
+app.route("/name").get(first_last_query).post(first_last_body);
 
 app.get("/", views);
 app.get("/json", get_json);
