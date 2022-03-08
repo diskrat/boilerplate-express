@@ -7,8 +7,8 @@ function views(req, res) {
 }
 
 function logger(req, res, next) {
-  console.log(`${req.method} ${req.path} - ${req.ip}`)
-  next()
+  console.log(`${req.method} ${req.path} - ${req.ip}`);
+  next();
 }
 function get_json(req, res) {
   const data = { message: 'Hello json' };
@@ -17,34 +17,33 @@ function get_json(req, res) {
   res.json(data);
 }
 
-function time_server(req,res,next) {
-    req.time = new Date().toString()
-    next();
+function time_server(req, res, next) {
+  req.time = new Date().toString();
+  next();
 }
 
-function final_handdler(req,res) {
-    const time = {'time': req.time }
-    res.json(time)
+function final_handdler(req, res) {
+  const time = { time: req.time };
+  res.json(time);
 }
 
-function echo_word(req,res) {
-  res.json({'echo':req.params.word})
+function echo_word(req, res) {
+  res.json({ echo: req.params.word });
 }
 
+function first_last(req,res) {
+  res.json({name: `${req.query.first} ${req.query.last}`});
+}
 
-app.use(logger)
+app.use(logger);
 app.use('/public', express.static(__dirname + '/public'));
 
-app.post('/:word',(req, res) => {
-  const {echo} = req.params;
-  console.log(req.params);
-  res.json(req.params)
-})
+app.route('/name').get(first_last);
 
 app.get('/', views);
 app.get('/json', get_json);
-app.get('/now',time_server,final_handdler);
-app.get('/:word/echo',echo_word);
+app.get('/now', time_server, final_handdler);
+app.get('/:word/echo', echo_word);
 
 
 module.exports = app;
