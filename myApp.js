@@ -1,9 +1,9 @@
-var express = require("express");
-require("dotenv").config();
+var express = require('express');
+require('dotenv').config();
 var app = express();
 
 function views(req, res) {
-  res.sendFile(__dirname + "/views/index.html");
+  res.sendFile(__dirname + '/views/index.html');
 }
 
 function logger(req, res, next) {
@@ -11,9 +11,9 @@ function logger(req, res, next) {
   next()
 }
 function get_json(req, res) {
-  const data = { message: "Hello json" };
-  if (process.env.MESSAGE_STYLE == "uppercase")
-    data["message"] = data["message"].toUpperCase();
+  const data = { message: 'Hello json' };
+  if (process.env.MESSAGE_STYLE == 'uppercase')
+    data['message'] = data['message'].toUpperCase();
   res.json(data);
 }
 
@@ -26,13 +26,26 @@ function final_handdler(req,res) {
     const time = {'time': req.time }
     res.json(time)
 }
+
+function echo_word(req,res) {
+  res.json({'echo':req.params})
+}
+
+
 app.use(logger)
-app.use("/public", express.static(__dirname + "/public"));
+app.use('/public', express.static(__dirname + '/public'));
 
+app.post('/:word',(req, res) => {
+  const {echo} = req.params;
+  console.log(req.params);
+  res.json(req.params)
+  
+})
 
-app.get("/", views);
-app.get("/json", get_json);
-app.get("/now",time_server,final_handdler);
+app.get('/', views);
+app.get('/json', get_json);
+app.get('/now',time_server,final_handdler);
+app.get('/:word/echo',echo_word);
 
 
 module.exports = app;
