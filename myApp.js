@@ -1,5 +1,6 @@
 var express = require('express');
 require('dotenv').config();
+var bodyParser = require('body-parser')
 var app = express();
 
 function views(req, res) {
@@ -37,6 +38,7 @@ function first_last(req,res) {
 
 app.use(logger);
 app.use('/public', express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({extended: false}))
 
 app.route('/name').get(first_last);
 
